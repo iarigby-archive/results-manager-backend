@@ -1,4 +1,4 @@
-const path = `/home/ia/checking/paradigms/midterm_2/results`
+const path = `data/results`
 
 const backend = require('./kuzzle')
 const { readdirSync } = require('fs')

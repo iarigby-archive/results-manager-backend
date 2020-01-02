@@ -1,11 +1,11 @@
 const router = require('express').Router()
 const fs = require('fs')
 const git = require('./git')
-const backend  = require('./kuzzle')
+const backend = require('./kuzzle')
 
-const returnFile = async (req, res) => {
+const returnFile = async(req, res) => {
     const id = req.params.studentid
-    // console.log(id)
+        // console.log(id)
     await backend.kuzzle.connect()
     const student = await backend.get(id)
     const emailID = student._source.id
@@ -17,27 +17,27 @@ const returnFile = async (req, res) => {
             // console.log('sending')
             // res.send({ text: data.stdout })
             // todo convert this to promise
-            const solutionPath = '/home/ia/Downloads/solution.s'
+            const solutionPath = `data/solutions/${file}`
             fs.readFile(solutionPath, 'utf8',
-                (err, file) => {
-                    if (err) {
-                        res.send('error')
-                        console.log(err)
-                        return;
+                    (err, file) => {
+                        if (err) {
+                            res.send('error')
+                            console.log(err)
+                            return;
+                        }
+                        // console.log(file.replace('\r\n', '<br>'))
+                        res.setHeader('Content-Type', 'application/json');
+                        res.send({
+                            text: data.stdout,
+                            solution: file
+                        })
+                    },
+                    err => {
+                        console.log('err', err)
+                        res.send(err)
                     }
-                    // console.log(file.replace('\r\n', '<br>'))
-                    res.setHeader('Content-Type', 'application/json');
-                    res.send({
-                        text: data.stdout,
-                        solution: file
-                    })
-                },
-                err => {
-                    console.log('err', err)
-                    res.send(err)
-                }
-            )
-            // console.log(data.stderr, 'err')
+                )
+                // console.log(data.stderr, 'err')
         })
         .catch((err) => {
             console.log(err, 'errcatch')
