@@ -46,7 +46,7 @@ const sendEmail = (student) => {
 
 const main = async() => {
     await backend.kuzzle.connect()
-    const studentIds = getDirectories(path)
+    const studentIds = getDirectories(config.path)
         .slice(1, 10)
     const studentsData = await Promise.all(studentIds.map(getStudentData))
     const students = await Promise.all(studentsData.map(createStudent))
