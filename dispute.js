@@ -7,11 +7,14 @@ const students = require('./student')
 const fetchDisputes = async function(id) {
     const data = await backend.get(id)
     const disputes = data._source.disputes || []
-    return disputes;
+    return {
+        emailId: data._source.id,
+        disputes: disputes
+    };
 }
 const getDisputes = async function(req, res) {
     const id = req.params.studentid
-    const disputes = await fetchDisputes(id)
+    const { disputes } = await fetchDisputes(id)
     const unresolved = disputes.filter(e => {
         return e.status == 'unresolved'
     })
@@ -19,9 +22,9 @@ const getDisputes = async function(req, res) {
 }
 
 const createDispute = async function(req, res) {
-    const id = req.params.studentid
     const data = req.body
-    const disputes = await fetchDisputes(id)
+    const id = req.params.studentid
+    const { emailId, disputes } = await fetchDisputes(id)
     disputes.push({
         id: disputes.length + 1,
         info: data.info,
@@ -31,15 +34,11 @@ const createDispute = async function(req, res) {
     await backend.update(id, { disputes: disputes })
     await backend.refresh()
     res.send({ disputes: disputes })
-    disputeNotify(data, id)
+    disputeNotify(data, emailId)
 }
 
 const disputeNotify = function(data, id) {
-        const emailId = data.emailId
-            // TODO
-            // const emailAddress = `${emailId}@freeuni.edu.ge`
-        const emailAddress = `i.mghvdliashvili@freeuni.edu.ge`
-            // SNOOZED
+        const emailAddress = `${id}@freeuni.edu.ge`
         email.sendEmail(
             `${emailAddress}, ${config.email}`,
             // TODO add id to header
@@ -50,9 +49,9 @@ const disputeNotify = function(data, id) {
 const resolveDispute = async function(req, res) {
     const id = req.params.studentid
     const disputeid = req.params.disputeid
-    const old = await fetchDisputes(id)
-    const disputes = old.map(dispute => updateDispute(dispute, disputeid))
-    const data = { disputes: disputes }
+    const { disputes } = await fetchDisputes(id)
+    const updated = disputes.map(dispute => updateDispute(dispute, disputeid))
+    const data = { disputes: updated }
     backend.update(id, data)
         .then(() => res.send(data))
 }
