@@ -2,6 +2,7 @@ const router = require('express').Router()
 const fs = require('fs')
 const git = require('./git')
 const backend = require('./kuzzle')
+const path = require('./config').path
 
 const returnFile = async(req, res) => {
     const id = req.params.studentid
@@ -17,7 +18,7 @@ const returnFile = async(req, res) => {
             // console.log('sending')
             // res.send({ text: data.stdout })
             // todo convert this to promise
-            const solutionPath = `data/solutions/${file}`
+            const solutionPath = `${path}/solutions/${file}`
             fs.readFile(solutionPath, 'utf8',
                     (err, file) => {
                         if (err) {

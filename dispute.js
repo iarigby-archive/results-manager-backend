@@ -1,12 +1,12 @@
 const router = require('express').Router()
 const backend = require('./kuzzle')
 
-const fetchDisputes = async function (id) {
+const fetchDisputes = async function(id) {
     const data = await backend.get(id)
     const disputes = data._source.disputes || []
     return disputes;
 }
-const getDisputes = async function (req, res) {
+const getDisputes = async function(req, res) {
     const id = req.params.studentid
     const disputes = await fetchDisputes(id)
     const unresolved = disputes.filter(e => {
@@ -15,10 +15,9 @@ const getDisputes = async function (req, res) {
     res.send({ disputes: unresolved })
 }
 
-const createDispute = async function (req, res) {
+const createDispute = async function(req, res) {
     const id = req.params.studentid
     const data = req.body
-    console.log('hiii', data)
     const disputes = await fetchDisputes(id)
     disputes.push({
         id: disputes.length + 1,
@@ -32,7 +31,7 @@ const createDispute = async function (req, res) {
 }
 
 // should maybe add resolution time + who resolved it
-const resolveDispute = async function (req, res) {
+const resolveDispute = async function(req, res) {
     const id = req.params.studentid
     const disputeid = req.params.disputeid
     const old = await fetchDisputes(id)
@@ -42,7 +41,7 @@ const resolveDispute = async function (req, res) {
         .then(() => res.send(data))
 }
 
-const updateDispute = function (dispute, id) {
+const updateDispute = function(dispute, id) {
     if (dispute.id == id)
         dispute.status = "resolved"
     return dispute

@@ -2,12 +2,13 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const bodyParser = require('body-parser');
-
+const inputSanitizer = require('sanitize').middleware
 
 const midtermController = require('./midterm')
 const disputeController = require('./dispute')
     // run()
 
+app.use(inputSanitizer);
 app.use(morgan('combined'))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
