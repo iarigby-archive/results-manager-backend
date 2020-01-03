@@ -2,10 +2,9 @@
 
 // const repo = git('/home/ia/dev/social_network')
 const exec = require('child-process-promise').exec
-const path = require('./config').path
-
-// repo.status()
-//     .then(s => console.log(s))
+const config = require('./config')
+    // repo.status()
+    //     .then(s => console.log(s))
 
 //     // repo.diff().then(repo => 
 //     //    console.log(repo))
@@ -16,7 +15,8 @@ const path = require('./config').path
 // command = `cd ${path} && git blame ${id}/server_room.s | grep -n '^0\\{8\\} ' | cut -f1 -d: `
 
 module.exports.getDiff = (id, file) => {
-    const command = `cd ${path}/results && git diff -U1000 ${id}/${file}`
+    // const command = `cd ${path}/results && git diff -U1000 ${id}/${file}`
+    const command = `sh ${config.diffScript} ${config.path}/results ${id}/${file}`
     return exec(command)
         .catch(err => console.log(err, `\n occured while git diff`))
 }
