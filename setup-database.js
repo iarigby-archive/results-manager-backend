@@ -1,11 +1,9 @@
-const path = `data/results`
-
 const backend = require('./kuzzle')
 const { readdirSync } = require('fs')
 const email = require('./email')
-const fs = require('fs').promises
-const url = 'localhost:8080'
 const students = require('./student')
+const config = require('./config')
+
 const getDirectories = source =>
     readdirSync(source, { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
@@ -24,7 +22,7 @@ const createStudent = async(studentData) => {
 }
 
 const getStudentData = (studentDir) => {
-    const file = readdirSync(`${path}/${studentDir}`, { withFileTypes: true })
+    const file = readdirSync(`${config.path}/${studentDir}`, { withFileTypes: true })
         .map(file => file.name)[0]
     return {
         id: studentDir,
