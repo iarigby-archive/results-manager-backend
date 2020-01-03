@@ -22,7 +22,7 @@ const createStudent = async(studentData) => {
 }
 
 const getStudentData = (studentDir) => {
-    const file = readdirSync(`${config.path}/${studentDir}`, { withFileTypes: true })
+    const file = readdirSync(`${config.path}/results/${studentDir}`, { withFileTypes: true })
         .map(file => file.name)[0]
     return {
         id: studentDir,
@@ -46,7 +46,7 @@ const sendEmail = (student) => {
 
 const main = async() => {
     await backend.kuzzle.connect()
-    const studentIds = getDirectories(config.path)
+    const studentIds = getDirectories(config.path + '/results')
         .slice(1, 10)
     const studentsData = await Promise.all(studentIds.map(getStudentData))
     const students = await Promise.all(studentsData.map(createStudent))
