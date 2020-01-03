@@ -24,7 +24,7 @@ module.exports.sendEmail = (to, subject, text) => {
         if (error) {
             console.log(error);
         } else {
-            console.log('Email sent: ' + info.response);
+            console.log('Email sent to: ' + to + '\n' + info.response);
         }
     });
 

@@ -38,12 +38,13 @@ const disputeNotify = function(data, id) {
         const emailId = data.emailId
             // TODO
             // const emailAddress = `${emailId}@freeuni.edu.ge`
-        const emailAddress = `marvinzem@gmail.com`
+        const emailAddress = `i.mghvdliashvili@freeuni.edu.ge`
             // SNOOZED
         email.sendEmail(
             `${emailAddress}, ${config.email}`,
-            `პარადიგმების მეორე შუალედური: ${emailId} გასაჩივრება`,
-            `${data.info}\n${config.url}?id=${id}`)
+            // TODO add id to header
+            `პარადიგმების მეორე შუალედური: გასაჩივრება`,
+            `#${data.id}: ${data.info}\n${config.url}?id=${id}`)
     }
     // should maybe add resolution time + who resolved it
 const resolveDispute = async function(req, res) {
