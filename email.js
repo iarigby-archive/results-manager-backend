@@ -19,13 +19,13 @@ module.exports.sendEmail = (to, subject, text) => {
         subject: subject,
         text: text
     };
-    console.log(mailOptions)
-        // transporter.sendMail(mailOptions, function(error, info) {
-        //     if (error) {
-        //         console.log(error);
-        //     } else {
-        //         console.log('Email sent: ' + info.response);
-        //     }
-        // });
+    console.log('sending email to ', to)
+    transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
 
 }

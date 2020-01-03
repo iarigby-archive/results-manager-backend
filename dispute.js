@@ -1,5 +1,8 @@
 const router = require('express').Router()
 const backend = require('./kuzzle')
+const email = require('./email')
+const config = require('./config')
+const students = require('./student')
 
 const fetchDisputes = async function(id) {
     const data = await backend.get(id)
@@ -28,9 +31,21 @@ const createDispute = async function(req, res) {
     await backend.update(id, { disputes: disputes })
     await backend.refresh()
     res.send({ disputes: disputes })
+    disputeNotify(data, id)
 }
 
-// should maybe add resolution time + who resolved it
+const disputeNotify = function(data, id) {
+        const emailId = data.emailId
+            // TODO
+            // const emailAddress = `${emailId}@freeuni.edu.ge`
+        const emailAddress = `marvinzem@gmail.com`
+            // SNOOZED
+        email.sendEmail(
+            `${emailAddress}, ${config.email}`,
+            `პარადიგმების მეორე შუალედური: ${emailId} გასაჩივრება`,
+            `${data.info}\n${config.url}?id=${id}`)
+    }
+    // should maybe add resolution time + who resolved it
 const resolveDispute = async function(req, res) {
     const id = req.params.studentid
     const disputeid = req.params.disputeid

@@ -5,7 +5,7 @@ const { readdirSync } = require('fs')
 const email = require('./email')
 const fs = require('fs').promises
 const url = 'localhost:8080'
-
+const students = require('./student')
 const getDirectories = source =>
     readdirSync(source, { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
@@ -35,11 +35,14 @@ const getStudentData = (studentDir) => {
 }
 
 const sendEmail = (student) => {
-    const data = student._source
+    const id = `${students.getId(student)}`
+    const emailAddress = `${id}@freeuni.edu.ge`
+
     email.sendEmail(
-        `${data.id}@freeuni.edu.ge`,
-        `პარადიგმების მეორე შუალედურის ნაშრომი შემოწმებულია`,
-        `თქვენი ნაშრომის ნახვა შეგიძლიათ ბმულზე ${url}/?id=${student._id}`
+        emailAddress,
+        `${id}: პარადიგმების მეორე შუალედურის ნაშრომი შემოწმებულია`,
+        `თქვენი ნაშრომის ნახვა შეგიძლიათ ბმულზე ${students.getUrl(student)}
+        გვერდი ექსპერიმენტულია და თუ გვერდზე რამე არ მუშაობს, ამ მეილზე პასუხით მომწერეთ`
     )
 }
 
