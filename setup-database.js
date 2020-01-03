@@ -34,8 +34,8 @@ const getStudentData = (studentDir) => {
 
 const sendEmail = (student) => {
     const id = `${students.getId(student)}`
-    const emailAddress = `${id}@freeuni.edu.ge`
-
+        // const emailAddress = `${id}@freeuni.edu.ge`
+    const emailAddress = 'i.mghvdliashvili@freeuni.edu.ge'
     email.sendEmail(
         emailAddress,
         `${id}: პარადიგმების მეორე შუალედურის ნაშრომი შემოწმებულია`,
