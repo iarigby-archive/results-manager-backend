@@ -1,26 +1,29 @@
 {
-  "name": "schoolsoftware",
-  "version": "1.0.0",
-  "description": "h",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^2.0.2"
-  },
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "child-process-promise": "^2.2.1",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "kuzzle-sdk": "^7.0.1",
-    "morgan": "^1.9.1",
-    "nodemailer": "^6.4.2",
-    "randomstring": "^1.1.5",
-    "sanitize": "^2.1.0",
-    "simple-git": "^1.129.0"
-  }
+    "name": "schoolsoftware",
+    "version": "1.0.0",
+    "description": "h",
+    "main": "index.js",
+    "scripts": {
+        "test": "mocha test/api.test.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "chai": "^4.2.0",
+        "mocha": "^7.0.0",
+        "nodemon": "^2.0.2",
+        "supertest": "^4.0.2"
+    },
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "child-process-promise": "^2.2.1",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "kuzzle-sdk": "^7.0.1",
+        "morgan": "^1.9.1",
+        "nodemailer": "^6.4.2",
+        "randomstring": "^1.1.5",
+        "sanitize": "^2.1.0",
+        "simple-git": "^1.129.0"
+    }
 }
