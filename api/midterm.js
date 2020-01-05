@@ -1,10 +1,9 @@
-const router = require('express').Router()
 const fs = require('fs')
-const git = require('./git')
-const backend = require('./kuzzle')
-const path = require('./config').path
+const git = require('../services/git')
+const backend = require('../services/kuzzle')
+const path = require('../config/config').path
 
-const returnFile = async(req, res) => {
+module.exports.returnFile = async(req, res) => {
     const id = req.params.studentid
         // console.log(id)
     await backend.kuzzle.connect()
@@ -47,7 +46,3 @@ const returnFile = async(req, res) => {
         })
 
 }
-
-router.get('/:studentid', returnFile)
-
-module.exports = router

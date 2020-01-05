@@ -2,7 +2,7 @@
 
 // const repo = git('/home/ia/dev/social_network')
 const exec = require('child-process-promise').exec
-const config = require('./config')
+const config = require('../config/config')
     // repo.status()
     //     .then(s => console.log(s))
 

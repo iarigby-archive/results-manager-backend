@@ -1,8 +1,10 @@
-const backend = require('./kuzzle')
 const { readdirSync } = require('fs')
-const email = require('./email')
-const students = require('./student')
-const config = require('./config')
+
+const backend = require('../services/kuzzle')
+const email = require('../services/email')
+
+const students = require('../student')
+const config = require('../config/config')
 
 const getDirectories = source =>
     readdirSync(source, { withFileTypes: true })

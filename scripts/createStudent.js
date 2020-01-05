@@ -1,9 +1,8 @@
-const backend = require('./kuzzle')
+const backend = require('../services/kuzzle')
 
 // eMgeUm8BqR86sytD2Opx
-const createStudent = async () => {
-    const newStudent = await backend.createID(
-        {
+const createStudent = async() => {
+    const newStudent = await backend.createID({
             id: "Aroba18",
             file: "server_room.s"
         },
@@ -12,7 +11,7 @@ const createStudent = async () => {
     console.log(newStudent._id)
 }
 
-const deleteAll = async () => {
+const deleteAll = async() => {
     const results = await backend.getAll()
     console.log(results)
 
@@ -25,7 +24,7 @@ const deleteAll = async () => {
     await backend.refresh()
 }
 
-const main = async () => {
+const main = async() => {
     await backend.kuzzle.connect();
     await backend.refresh()
     await deleteAll()

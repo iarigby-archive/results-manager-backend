@@ -11,15 +11,16 @@ const kuzzle = new Kuzzle(
 kuzzle.on('networkError', error => {
     console.error('Network Error: ', error);
 });
+
+// TODO get from config
 const index = 'school-software'
 const collection = 'id-mapping'
 
 const connect = async() => {
     await kuzzle.connect()
-    console.log('connected successfully')
+    console.log('connected to database successfully')
 }
 
-connect()
 module.exports.kuzzle = kuzzle
 module.exports.get = async(id) => kuzzle.document.get(index, collection, id)
 module.exports.create = async(object) => kuzzle.document.create(index, collection, object)
