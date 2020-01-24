@@ -2,7 +2,6 @@ const { readdirSync } = require('fs')
 
 const backend = require('../services/kuzzle')
 const { Student } = require('../types/student')
-const config = require('../config/config')
 const subject = 'paradigms'
 const { Path } = require('../types/paths')
 const path = new Path(subject)

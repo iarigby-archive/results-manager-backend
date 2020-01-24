@@ -21,8 +21,6 @@ module.exports.sendEmail = (to, subject, text, callback) => {
         text: text
     };
     console.log('sending email to ', to, subject)
-    callback()
-    /*
     transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
             console.log(error);
@@ -30,7 +28,6 @@ module.exports.sendEmail = (to, subject, text, callback) => {
             console.log('Email sent to: ' + to + '\n' + info.response);
             callback()
         }
-    });
-    */
+    })
 
 }

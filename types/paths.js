@@ -5,8 +5,10 @@ module.exports.Path = class {
         this.base = config.path
     }
 
-    getStudent = (exam, emailId) =>
-        `${this.base}/${this.subject}/${exam}/${emailId}`
-    getExam = (exam) =>
-        `${this.base}/${this.subject}/${exam}`
+    getStudent(exam, emailId) {
+        return `${this.base}/${this.subject}/${exam}/${emailId}`
+    }
+    getExam(exam) {
+        return `${this.base}/${this.subject}/${exam}`
+    }
 }
