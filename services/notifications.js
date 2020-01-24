@@ -73,11 +73,12 @@ const main = async () => {
         .map(s => s._source)
         .filter(hasNotifications)
         .map(mergeNotifications)
+    const delay = 5000
     notifications
         .forEach((student, id) =>
-        setTimeout(() => sendNotifications(student), id * 1000)
-    )
-    setTimeout(() => backend.kuzzle.disconnect(), (notifications.length + 5) * 1000)
+            setTimeout(() => sendNotifications(student), id * delay)
+        )
+    setTimeout(() => backend.kuzzle.disconnect(), (notifications.length + 5) * delay)
 }
 
 main()
