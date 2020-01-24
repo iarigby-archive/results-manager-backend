@@ -1,8 +1,8 @@
 const PORT = 3000
 
-const app = require('./api/app.js')
+const app = require('./api/app')
 
-const kuzzle = require('./services/kuzzle.js')
+const { kuzzle } = require('./services/kuzzle')
 
 kuzzle.connect()
     .then(() => app.listen(PORT, () => console.log('server started')))

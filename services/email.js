@@ -11,21 +11,26 @@ const transporter = nodemailer.createTransport({
         pass: pass
     }
 });
+    
 
-module.exports.sendEmail = (to, subject, text) => {
+module.exports.sendEmail = (to, subject, text, callback) => {
     const mailOptions = {
         from: email,
         to: to,
         subject: subject,
         text: text
     };
-    console.log('sending email to ', to)
+    console.log('sending email to ', to, subject)
+    callback()
+    /*
     transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
             console.log(error);
         } else {
             console.log('Email sent to: ' + to + '\n' + info.response);
+            callback()
         }
     });
+    */
 
 }

@@ -16,11 +16,6 @@ kuzzle.on('networkError', error => {
 const index = 'school-software'
 const collection = 'id-mapping'
 
-const connect = async() => {
-    await kuzzle.connect()
-    console.log('connected to database successfully')
-}
-
 module.exports.kuzzle = kuzzle
 module.exports.get = async(id) => kuzzle.document.get(index, collection, id)
 module.exports.create = async(object) => kuzzle.document.create(index, collection, object)

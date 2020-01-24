@@ -1,7 +1,6 @@
 const backend = require('../services/kuzzle')
 const email = require('../services/email')
 const config = require('../config/config')
-const students = require('../config/student')
 
 const fetchDisputes = async function(id) {
     const data = await backend.get(id)
