@@ -10,13 +10,13 @@ const contents = (req, res) =>
 
 router.get('/', (req, res) => res.send({ status: 'OK' }))
 router.get('/exams/:subject/:examId/', contents)
-router.get('/exams/:subject/:examId/tasks/:studentid', midterm.getStudentTasks)
-router.get('/exams/:subject/:examId/results/:studentid/:task', midterm.returnFile)
-router.get('/exams/:subject/:examId/disputes/:studentid/:task', dispute.getDisputes)
-router.post('/exams/:subject/:examId/disputes/:studentid/:task/new', dispute.createDispute)
+// router.get('/exams/:subject/:examId/tasks/:studentid', midterm.getStudentTasks)
+router.get('/exams/:subject/:examId/:studentid/', midterm.getExamData)
+// router.get('/exams/:subject/:examId/disputes/:studentid/:task', dispute.getDisputes)
+router.post('/exams/:subject/:examId/:studentid/disputes/:task/new', dispute.createDispute)
 
-// this might need to use 
-router.get('/exams/:subject/:examId/disputes/:studentid/resolve/:disputeid', dispute.resolveDispute)
+// this might need to use put
+router.get('/exams/:subject/:examId/:studentid/disputes/:disputeid/resolve', dispute.resolveDispute)
 
 
 module.exports = router
