@@ -9,6 +9,7 @@ const contents = (req, res) =>
     res.send({ midtermId: req.params.examId })
 
 router.get('/', (req, res) => res.send({ status: 'OK' }))
+router.get('/exams/:subject/', midterm.getSubjectExams)
 router.get('/exams/:subject/:examId/', contents)
 // router.get('/exams/:subject/:examId/tasks/:studentid', midterm.getStudentTasks)
 router.get('/exams/:subject/:examId/:studentid/', midterm.getExamData)

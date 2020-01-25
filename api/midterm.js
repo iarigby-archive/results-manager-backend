@@ -2,7 +2,16 @@ const fs = require('fs').promises
 const git = require('../services/git')
 const backend = require('../services/kuzzle')
 const { path, tasks } = require('../config/config')
+const { Path } = require('../types/paths')
 
+module.exports.getSubjectExams = async(req, res) => {
+    const subject = req.params.subject
+    const path = new Path(subject)
+    const dirs = await fs.readdir(path.getSubject())
+    res.send({exams: dirs})
+}
+
+// TODO not using
 module.exports.getStudentTasks = async (req, res) => {
     const id = req.params.studentid
     const subject = req.params.subject
