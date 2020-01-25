@@ -9,9 +9,14 @@ const path = new Path(subject)
 let existingStudents = []
 let studentsWithNewData = []
 
-const main = async () => {
+// if (process.argv.length < 3) {
+/**
+ * @returns number of updates
+ */
+module.exports.Run = async () => {
     await backend.kuzzle.connect()
     const exams = getDirectories(path.getSubject())
+    let updatedCount = 0
     for (exam of exams) {
         await updateExisting()
         const studentIds = getDirectories(path.getExam(exam))
@@ -20,11 +25,14 @@ const main = async () => {
         const students = studentsData
             .map(s => addStudentData(s, exam))
         // TODO add id's that need changes
-        await Promise.all(students
+        const toUpdate = students
             .filter(hasNewData)
+        await Promise.all(toUpdate
             .map(syncChanges))
+        updatedCount += toUpdate.length
     }
     backend.kuzzle.disconnect()
+    return updatedCount
 }
 
 
@@ -116,8 +124,3 @@ const updateExisting = async () => {
 
 }
 
-if (process.argv.length < 3) {
-    main()
-} else {
-    const exam = process.argv[2]
-}

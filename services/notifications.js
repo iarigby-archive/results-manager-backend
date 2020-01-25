@@ -4,6 +4,23 @@ const templates = require('../resources/emailTemplates')
 const config = require('../config/config')
 
 const existingStudents = []
+module.exports.Run = async (offset) => {
+    const delay = offset || 5000
+    await backend.kuzzle.connect()
+    await updateExisting()
+    const notifications = existingStudents
+        .map(s => s._source)
+        .filter(hasNotifications)
+        .map(mergeNotifications)
+    console.log(`${notifications.length} new notifications`)
+    notifications
+        .forEach((student, id) =>
+            setTimeout(() => sendNotifications(student), id * delay)
+        )
+
+
+    setTimeout(() => backend.kuzzle.disconnect(), (notifications.length + 5) * delay)
+}
 
 // TODO callback
 const sendEmail = (student, notification) => {
@@ -66,19 +83,3 @@ const hasNotifications = (student) => {
     return student.notifications.filter(n => !n.sent).length > 0
 }
 
-const main = async () => {
-    await backend.kuzzle.connect()
-    await updateExisting()
-    const notifications = existingStudents
-        .map(s => s._source)
-        .filter(hasNotifications)
-        .map(mergeNotifications)
-    const delay = 5000
-    notifications
-        .forEach((student, id) =>
-            setTimeout(() => sendNotifications(student), id * delay)
-        )
-    setTimeout(() => backend.kuzzle.disconnect(), (notifications.length + 5) * delay)
-}
-
-main()

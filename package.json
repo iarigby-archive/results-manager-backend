@@ -5,7 +5,11 @@
     "main": "index.js",
     "scripts": {
         "test": "mocha test/*.test.js",
-        "start": "nodemon index.js"
+        "start": "nodemon index.js",
+        "refresh": "node -e 'require(\"./scripts/setup-database\").Run()'",
+        "restart-database": "node scripts/restart-database.js",
+        "send-notifications": "node -e 'require(\"./services/notifications\").Run()'",
+        "start-server": "nodemon server.js"
     },
     "author": "",
     "license": "ISC",
