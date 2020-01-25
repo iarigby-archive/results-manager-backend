@@ -11,4 +11,7 @@ module.exports.Path = class {
     getExam(exam) {
         return `${this.base}/${this.subject}/${exam}`
     }
+    getSubject() {
+        return `${this.base}/${this.subject}`
+    }
 }

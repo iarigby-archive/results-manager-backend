@@ -64,7 +64,9 @@ module.exports.Student = class {
                 name: task,
                 sent: false
             })
+            return true
         }
+        return false
     }
 }
 
