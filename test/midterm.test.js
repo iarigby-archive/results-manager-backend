@@ -9,19 +9,35 @@ describe('midterm test', () => {
         kuzzle.connect()
             .then(() => done())
     })
-    it('files endopint', async () => {
+
+
+    // TODO this is useless and also duplicate of api.test
+    it('exam endpoint', async () => {
         const res = await request(app)
-            .get(`/exams/paradigms/final/results/${id}/asm_exam_checker`)
+            .get(`/exams/paradigms/final/`)
         expect(res.statusCode).equal(200)
-        // console.log(res.body.files)
-        // expect(res.body.midtermId).equal('4')
     })
 
-    it('tasks endpoint', async () => {
+    const exam = 'final'
+    const task = 'talent_show'
+    const fileName = 'talent_show.c'
+
+    it('update files', async () => {
         const res = await request(app)
-            .get(`/exams/paradigms/final/tasks/${id}`)
-        console.log(res.body)
-        expect(res.statusCode).equal(200)
+            .post(`/exams/paradigms/${exam}/${id}/${task}/change`)
+    })
+
+    it('should not update file if exam does not exist', async () => {
+        const res = await request(app)
+            .post(`/exams/paradigms/${exam}2/${id}/${task}/change`)
+        expect(res.body.error.length > 0).to.be.true
+
+    })
+
+    it('should not update task that is not in the exam', async () => {
+        const res = await request(app)
+            .post(`/exams/paradigms/${exam}/${id}/${task}ab/change`)
+        expect(res.body.error.length > 0).to.be.true
     })
     after(function () {
         kuzzle.disconnect()

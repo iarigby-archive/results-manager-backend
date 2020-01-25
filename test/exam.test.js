@@ -8,7 +8,6 @@ describe('subject exams', () => {
     it('contents', async () => {
         const res = await request(app)
             .get('/exams/paradigms')
-        console.log(res.body)
-        expect(res.body.exams.length > 0).to.be.true
+        expect(res.body.exams.length).to.equal(3)
     })
 })

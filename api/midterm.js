@@ -65,8 +65,11 @@ module.exports.getExamData = async (req, res) => {
         // TODO tasks is a stupid name
         for (fileName of tasks[exam][task]) {
             const filePath = `${path}/${subject}/${exam}/${emailId}/${task}/${fileName}`
-            const file =  await getFileContent(filePath)
+            try {
+                const file = await getFileContent(filePath)
             result.files[task].push(file)
+            } catch (e) {
+            }
         }
     }
 

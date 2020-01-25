@@ -12,8 +12,8 @@ describe('basic functionality test', () => {
 
     it('shoud route the miterms', async() => {
         const res = await request(app)
-            .get('/midterms/4')
+            .get('/exams/paradigms/midterm4')
         expect(res.statusCode).equal(200)
-        expect(res.body.midtermId).equal('4')
+        expect(res.body.midtermId).equal('midterm4')
     })
 })
