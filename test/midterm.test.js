@@ -2,8 +2,12 @@ const request = require('supertest')
 const app = require('../api/app')
 const expect = require('chai').expect
 const { kuzzle } = require('../services/kuzzle')
+const fs = require('fs').promises
+const { Path } = require('../types/paths')
 
-const id = 'Sjez028Bzia3gFHf48Br'
+const id = 'gVKN3G8BksRrH9fHi2Hd'
+
+const emailId = 'zkhut16'
 describe('midterm test', () => {
     before(function (done) {
         kuzzle.connect()
@@ -19,12 +23,26 @@ describe('midterm test', () => {
     })
 
     const exam = 'final'
-    const task = 'talent_show'
-    const fileName = 'talent_show.c'
-
+    const task = 'farthest_node'
+    
     it('update files', async () => {
+        const fileName = `${task}.scm`
+        const contents = 'abc'
+        const data = {
+            fileName: fileName,
+            contents: contents
+        }
         const res = await request(app)
             .post(`/exams/paradigms/${exam}/${id}/${task}/change`)
+            .send(data)
+        console.log(res.body)
+        expect(res.body.status).to.equal('updated')
+        const taskPath = new Path('paradigms').getTask(exam, emailId, task)
+        const filePath = `${taskPath}/${fileName}-changes`
+        console.log(filePath)
+        const newContents = await fs.readFile(filePath, 'utf-8')
+        expect(newContents).to.equal(contents)
+        await fs.unlink(filePath)
     })
 
     it('should not update file if exam does not exist', async () => {

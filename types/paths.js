@@ -5,6 +5,9 @@ module.exports.Path = class {
         this.base = config.path
     }
 
+    getTask(exam, emailId, task) {
+        return `${this.getStudent(exam, emailId)}/${task}`
+    }
     getStudent(exam, emailId) {
         return `${this.base}/${this.subject}/${exam}/${emailId}`
     }
