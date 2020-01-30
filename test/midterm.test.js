@@ -4,10 +4,20 @@ const expect = require('chai').expect
 const { kuzzle } = require('../services/kuzzle')
 const fs = require('fs').promises
 const { Path } = require('../types/paths')
+const td = require('testdouble')
 
 const id = 'gVKN3G8BksRrH9fHi2Hd'
-
 const emailId = 'zkhut16'
+
+describe('exam endpoint test', async() => {
+    it('should return list of exams in the subject', async () => {
+        request(app)
+        .get('/exams/paradigms/final')
+        .expect(200, {
+            exams: ['midterm3', 'midterm4', 'final']
+        })
+    })
+})
 describe('midterm test', () => {
     before(function (done) {
         kuzzle.connect()
@@ -19,7 +29,7 @@ describe('midterm test', () => {
     it('exam endpoint', async () => {
         const res = await request(app)
             .get(`/exams/paradigms/final/`)
-        expect(res.statusCode).equal(200)
+            .expect(200)
     })
 
     const exam = 'final'
@@ -35,11 +45,11 @@ describe('midterm test', () => {
         const res = await request(app)
             .post(`/exams/paradigms/${exam}/${id}/${task}/change`)
             .send(data)
-        console.log(res.body)
+            .expect(200)
+            
         expect(res.body.status).to.equal('updated')
         const taskPath = new Path('paradigms').getTask(exam, emailId, task)
         const filePath = `${taskPath}/${fileName}-changes`
-        console.log(filePath)
         const newContents = await fs.readFile(filePath, 'utf-8')
         expect(newContents).to.equal(contents)
         await fs.unlink(filePath)
