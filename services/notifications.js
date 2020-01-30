@@ -32,8 +32,8 @@ const sendEmail = (student, notification) => {
         templates.new_file.body(config.getUrl(student), notification),
         () => {
             const notifications = student.notifications
-            notification.sent = true
             const index = notifications.indexOf(notification)
+            notification.sent = true
             notifications[index] = notification
             updateNotified(student, notifications)
         }
