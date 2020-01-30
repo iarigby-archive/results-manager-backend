@@ -1,7 +1,7 @@
 const fs = require('fs').promises
 const git = require('../services/git')
-const backend = require('../services/kuzzle')
-const { path, tasks } = require('../config/config')
+const database = require('../services/kuzzle')
+const config = require('../config/config')
 const { Path } = require('../types/paths')
 
 module.exports.getSubjectExams = async (req, res) => {
@@ -11,34 +11,49 @@ module.exports.getSubjectExams = async (req, res) => {
     res.send({ exams: dirs })
 }
 
+// ღმერთო ჩემო
 module.exports.addNewFile = async (req, res) => {
     const exam = req.params.exam
-    if (!tasks[exam]) {
+    const subject = req.params.subject
+    if (!config.subjects[subject]) {
         res.status(201)
-        res.send({ error: 'exam not found' })
+        res.send({ error: `subject ${subject} not found`})
+    }
+    const exams = config.getExams(subject)
+    const examData = exams[exam]
+    if (!examData) {
+        res.status(201)
+        res.send({ error: `exam ${exam} not found in subject ${subject}` })
         return
     }
     const task = req.params.task
-    if (!tasks[exam][task]) {
+    const tasks = config.getTasks(examData)
+    const taskData = tasks[task]
+    if (!taskData) {
         res.status(201)
-        res.send({ error: 'task not found' })
+        res.send({ error: `task ${task} not found for exam ${exam} in subject ${subject}` })
         return
     }
-    const subject = req.params.subject
+
     const id = req.params.studentid
-    const data = await backend.get(id).catch(e => console.log(e))
+    const fileName = req.body.fileName
+    const files = config.getTaskFiles(taskData)
+    const file = files.find(f => f.includes(fileName))
+    if (!file) {
+        res.status(201)
+        res.send({error: `${task} has no file ${fileName}`})
+    }
+    const data = await database.get(id).catch(e => console.log(e))
     const emailId = data._source.emailId
-    console.log(emailId)
-    console.log(req.body)
-    const location = new Path(subject).getTask(exam, emailId, task)
+    const location = new Path(subject).getStudent(exam, emailId)
     // const destination = 
-    const newFileName = req.body.fileName + '-changes'
+    const newFileName = file + '-changes'
+    // TODO deal with exams with subfolders
     const path = `${location}/${newFileName}`
-    console.log(path)
     fs.writeFile(path, req.body.contents, 'utf-8')
     .then(() =>
         res.send({status: "updated"})
-    )
+    ).catch(e => console.log(e))
 }
 
 // TODO not using
@@ -47,7 +62,7 @@ module.exports.getStudentTasks = async (req, res) => {
     const subject = req.params.subject
     const exam = req.params.exam
     try {
-        const data = await backend.get(id)
+        const data = await database.get(id)
         const student = data._source
         res.setHeader('Content-Type', 'application/json');
         res.status(200)
@@ -77,7 +92,7 @@ module.exports.getExamData = async (req, res) => {
     const subject = req.params.subject
     const exam = req.params.exam
     // TODO 
-    const data = await backend.get(id)
+    const data = await database.get(id)
     const student = data._source
     const emailId = student.emailId
     const result = student.results[subject][exam]
@@ -91,11 +106,13 @@ module.exports.getExamData = async (req, res) => {
     result.emailId = emailId
     result.id = id
     result.files = {}
-    for (task of Object.keys(tasks[exam])) {
+    const path = new Path(subject)
+    for (task of tasks) {
         result.files[task] = []
         // TODO tasks is a stupid name
-        for (fileName of tasks[exam][task]) {
-            const filePath = `${path}/${subject}/${exam}/${emailId}/${task}/${fileName}`
+        const files = config.getTaskFiles(task)
+        for (fileName of files) {
+            const filePath = `${path.getStudent(exam, emailId)}/${fileName}`
             try {
                 const file = await getFileContent(filePath)
                 result.files[task].push(file)
