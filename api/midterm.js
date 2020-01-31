@@ -19,8 +19,7 @@ module.exports.addNewFile = async (req, res) => {
         res.status(201)
         res.send({ error: `subject ${subject} not found`})
     }
-    const exams = config.getExams(subject)
-    const examData = exams[exam]
+    const examData = config.getExam(subject, exam)
     if (!examData) {
         res.status(201)
         res.send({ error: `exam ${exam} not found in subject ${subject}` })
@@ -37,7 +36,7 @@ module.exports.addNewFile = async (req, res) => {
 
     const id = req.params.studentid
     const fileName = req.body.fileName
-    const files = config.getTaskFiles(taskData)
+    const files = taskData.getTaskFiles(taskData)
     const file = files.find(f => f.includes(fileName))
     if (!file) {
         res.status(201)
@@ -106,16 +105,18 @@ module.exports.getExamData = async (req, res) => {
     result.emailId = emailId
     result.id = id
     result.files = {}
+    const examData = config.getExam(subject, exam)
     const path = new Path(subject)
+    const tasks = config.getTasks(examData)
     for (task of tasks) {
-        result.files[task] = []
+        result.files[task.name] = []
         // TODO tasks is a stupid name
-        const files = config.getTaskFiles(task)
+        const files = task.getTaskFiles(task)
         for (fileName of files) {
             const filePath = `${path.getStudent(exam, emailId)}/${fileName}`
             try {
                 const file = await getFileContent(filePath)
-                result.files[task].push(file)
+                result.files[task.name].push(file)
             } catch (e) {
             }
         }
