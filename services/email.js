@@ -21,19 +21,18 @@ module.exports.sendEmail = (to, subject, text, callback) => {
         text: text
     };
     console.log('sending email to ', to, subject)
-    callback()
-    // transporter.sendMail(mailOptions, function (error, info) {
-    //     if (error) {
-    //         console.log(error);
-    //     } else {
-    //         if (info.response.Error) {
-    //             console.log('error while sending email to', to, info.response)
-    //         }
-    //         else {
-    //             console.log('Email sent to: ' + to + '\n' + info.response);
-    //             callback()
-    //         }
-    //     }
-    // })
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            if (info.response.Error) {
+                console.log('error while sending email to', to, info.response)
+            }
+            else {
+                console.log('Email sent to: ' + to + '\n' + info.response);
+                callback()
+            }
+        }
+    })
 
 }
