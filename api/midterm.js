@@ -8,7 +8,16 @@ module.exports.getSubjectExams = async (req, res) => {
     const subject = req.params.subject
     const path = new Path(subject)
     const dirs = await fs.readdir(path.getSubject())
-    res.send({ exams: dirs })
+    const exams = dirs.map(e => {
+        return {
+            name: e,
+            name_ge: config.getExam(subject, e).name_ge
+        }
+    })
+    res.send({
+        name_ge: config.getSubjectName(subject),
+        exams: exams
+    })
 }
 
 // ღმერთო ჩემო
@@ -17,7 +26,7 @@ module.exports.addNewFile = async (req, res) => {
     const subject = req.params.subject
     if (!config.subjects[subject]) {
         res.status(201)
-        res.send({ error: `subject ${subject} not found`})
+        res.send({ error: `subject ${subject} not found` })
     }
     const examData = config.getExam(subject, exam)
     if (!examData) {
@@ -40,7 +49,7 @@ module.exports.addNewFile = async (req, res) => {
     const file = files.find(f => f.includes(fileName))
     if (!file) {
         res.status(201)
-        res.send({error: `${task} has no file ${fileName}`})
+        res.send({ error: `${task} has no file ${fileName}` })
     }
     const data = await database.get(id).catch(e => console.log(e))
     const emailId = data._source.emailId
@@ -50,9 +59,9 @@ module.exports.addNewFile = async (req, res) => {
     // TODO deal with exams with subfolders
     const path = `${location}/${newFileName}`
     fs.writeFile(path, req.body.contents, 'utf-8')
-    .then(() =>
-        res.send({status: "updated"})
-    ).catch(e => console.log(e))
+        .then(() =>
+            res.send({ status: "updated" })
+        ).catch(e => console.log(e))
 }
 
 // TODO not using

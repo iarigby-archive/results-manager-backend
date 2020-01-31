@@ -2,7 +2,7 @@ const email = 'i.mghvdliashvili@freeuni.edu.ge'
 
 const paradigms = {
     name: 'paradigms',
-    name_ge: 'პარადიგმები',
+    name_ge: 'პროგრამირების პარადიგმები',
     getTaskFiles: (task) =>
         task.files.map(f => `${task.name}/${f}`)
     ,

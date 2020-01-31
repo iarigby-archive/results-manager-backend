@@ -9,7 +9,7 @@ module.exports = {
     // url: 'file:///home/ia/dev/results-manager/frontend/index.html',
     url: url,
     email: email,
-    getUrl: (subject, student) => `${url}?id=${student.id}&subject=${subject}`,
+    getUrl: (subject, student) => `${url}?id=${student}&subject=${subject}`,
     subjects: subjects,
     getExam: (subject, exam) => {
         const x = subjects[subject].exams.find(e => e.name == exam)
@@ -19,7 +19,8 @@ module.exports = {
     getTasks: (exam) =>
         exam.tasks.map(task => {
             task.getTaskFiles = task.getTaskFiles || exam.getTaskFiles
-            console.log(task)
             return task
         }),
+    getSubjectName: (subject) =>
+            subjects[subject].name_ge,
 }

@@ -14,10 +14,11 @@ router.get('/exams/:subject/:exam/', contents)
 // router.get('/exams/:subject/:exam/tasks/:studentid', midterm.getStudentTasks)
 router.get('/exams/:subject/:exam/:studentid/', midterm.getExamData)
 // router.get('/exams/:subject/:exam/disputes/:studentid/:task', dispute.getDisputes)
-router.post('/exams/:subject/:exam/:studentid/disputes/:task/new', dispute.createDispute)
 router.post('/exams/:subject/:exam/:studentid/:task/change', midterm.addNewFile)
 // this might need to use put
-router.get('/exams/:subject/:exam/:studentid/disputes/:disputeid/resolve', dispute.resolveDispute)
+router.get('/disputes/:studentid', dispute.getDisputes)
+router.post('/disputes/:studentid/', dispute.createDispute)
+router.get('/disputes/:studentid/:disputeid/resolve', dispute.resolveDispute)
 
 
 module.exports = router
