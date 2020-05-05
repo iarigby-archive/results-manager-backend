@@ -29,7 +29,7 @@ const sendEmail = (student, notification) => {
     email.sendEmail(
         emailAddress,
         templates.new_file.subject(student.emailId, notification),
-        templates.new_file.body(config.getUrl(student), notification),
+        templates.new_file.body(config.getUrl('paradigms', student.id), notification),
         () => {
             const notifications = student.notifications
             const index = notifications.indexOf(notification)
@@ -57,7 +57,7 @@ const mergeNotifications = (student) => {
         // todo map + join
         type: 'ახალი ფაილები',
         subject: 'პარადიგმები',
-        exam: Array.from(new Set(newNotifications.map(n => n.exam))).join(', '),
+        exam: Array.from(new Set(newNotifications.map(n => `${n.exam}, ${n.name}`))).join('\n'),
         sent: false
     })
     student.notifications = notifications
