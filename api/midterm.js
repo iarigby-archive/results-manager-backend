@@ -83,7 +83,7 @@ module.exports.getStudentTasks = async (req, res) => {
     }
 
 }
-const getFileContent = async (filePath) => {
+const getFileContent = async (filePath, fileName) => {
     const file = {
         name: fileName,
         contents: 'Not Found'
@@ -117,14 +117,14 @@ module.exports.getExamData = async (req, res) => {
     const examData = config.getExam(subject, exam)
     const path = new Path(subject)
     const tasks = config.getTasks(examData)
-    for (task of tasks) {
+    for (let task of tasks) {
         result.files[task.name] = []
         // TODO tasks is a stupid name
         const files = task.getTaskFiles(task)
-        for (fileName of files) {
+        for (let fileName of files) {
             const filePath = `${path.getStudent(exam, emailId)}/${fileName}`
             try {
-                const file = await getFileContent(filePath)
+                const file = await getFileContent(filePath, fileName)
                 result.files[task.name].push(file)
             } catch (e) {
             }
