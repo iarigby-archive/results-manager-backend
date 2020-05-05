@@ -14,6 +14,10 @@ const main = async () => {
         // console.log('Index deleted');
         // TODO refresh after delete or this doesn't work
         kuzzle.disconnect()
+    } catch(error) {
+	    kuzzle.disconnect()
+    }
+try {
         await kuzzle.connect()
         await kuzzle.index.create('school-software')
         await kuzzle.collection.create('school-software', 'id-mapping')
