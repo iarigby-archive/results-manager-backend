@@ -12,15 +12,26 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+module.exports.sendEmails = (emails, interval) => {
+    emails.forEach((email, index) => {
+        setTimeout(() => {
+            sendEmail(email.to, email.subject, email.text, email.callback, email.attachments)
+        }, index*interval)
+    })
+}
 
-module.exports.sendEmail = (to, subject, text, callback) => {
+const sendEmail = (to, subject, text, callback, attachments) => {
     const mailOptions = {
         from: email,
         to: to,
         subject: subject,
         text: text
     };
-    console.log('sending email to ', to, subject)
+    if (attachments) {
+        mailOptions.attachments = attachments
+    }
+    console.log('sending email to ', to)
+    // callback()
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log(error);
@@ -36,3 +47,5 @@ module.exports.sendEmail = (to, subject, text, callback) => {
     })
 
 }
+
+module.exports.sendEmail = sendEmail
